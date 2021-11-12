@@ -133,6 +133,16 @@ class unordered_map {
   // Inserts an element in hashmap
   insert_element(element, count=0) {
 
+    if(typeof count !== "number" || count.toString().includes("."))  {
+      console.log(`Count must be an integer value element: element = ${element}, count = ${count}`);
+      return;
+    }
+
+    if(count < 0) {
+      console.log(`Negative values not allowed for increase_count: count = ${count}`);
+      return;
+    }
+
     const index = this.get_hash_value(element);
     const { found, j_index } = this.search(element);
 
@@ -150,8 +160,13 @@ class unordered_map {
   // Increase the count of an element if it exists, else add the value
   increase_count(element, count=0) {
 
+    if(typeof count !== "number" || count.toString().includes("."))  {
+      console.log(`Count must be an integer value element: element = ${element}, count = ${count}`);
+      return;
+    }
+
     if(count < 0) {
-      console.log('Negative values not allowed for increase_count');
+      console.log(`Negative values not allowed for increase_count: count = ${count}`);
       return;
     }
 
@@ -173,8 +188,13 @@ class unordered_map {
   // Decrease the count of an element if it exists, else add the value
   decrease_count(element, count=0) {
 
+    if(typeof count !== "number" || count.toString().includes("."))  {
+      console.log(`Count must be an integer value element: element = ${element}, count = ${count}`);
+      return;
+    }
+
     if(count < 0) {
-      console.log('Negative values not allowed for decrease_count');
+      console.log(`Negative values not allowed for increase_count: count = ${count}`);
       return;
     }
 

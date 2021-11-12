@@ -7,7 +7,16 @@ function print_map() {
   for(let index = 0; index < map1.bucket.length; index++) {
     let str = "";
     for(let j_index = 0; j_index < map1.bucket[index].length; j_index++) {
-      str += map1.bucket[index][j_index]['value'] + " : " + map1.bucket[index][j_index]['count'] + "; ";
+      const element = map1.bucket[index][j_index];
+      if(typeof element['value'] === "string") {
+        str += `"${element['value']}" :  ${element['count']}; `;
+      } else if(typeof element['value'] === "object") {
+        str += JSON.stringify(element['value']) + ` :  ${element['count']}; `;
+      } else if(typeof element['value'] === "bigint") {
+        str += `${element['value']}n :  ${element['count']}; `;
+      } else {
+        str += `${element['value']} :  ${element['count']}; `;
+      }
     }
     if(str !== "") {
       console.log(str);
@@ -38,6 +47,7 @@ function change_in_bucket_size() {
 // Test case: 3 - Testing with double values
 /* map1.increase_count(100.213231, 1);
   map1.increase_count(100.213231, 100);
+  map1.insert_element("100.213231", 100);
   print_map();
 */
 
@@ -63,12 +73,45 @@ function change_in_bucket_size() {
   print_map();
   map1.insert_element(2, 1);
   print_map();
-  map1.insert_element(2, 1);
+  map1.insert_element("2", 1);
   print_map();
-  map1.insert_element(2, 1);
+  map1.insert_element(2, 3);
   print_map();
   map1.remove_element(1);
   print_map();
   map1.remove_element(2);
   print_map();
+*/
+
+// Test case: 6 - Checking for object types
+/*
+let object = {
+  name: "Himanshu",
+  age: 21,
+  Interest: "Software development"
+}
+
+map1.insert_element(object, 100);
+print_map();
+*/
+
+// Test case: 7 - Checking for boolean type
+/* map1.insert_element(true, 10000000);
+  map1.insert_element(false, 12);
+  print_map();
+*/
+
+// Test case 8: Checking for bigint type
+/*map1.insert_element(100n, 100);
+  map1.insert_element(100, 29);
+  print_map();
+*/
+
+// Test case 9: some more edge cases
+/*map1.increase_count("XYZ", 400);
+map1.decrease_count(1000, -100);
+map1.increase_count("XYZ", 300);
+map1.decrease_count("xyz", 400n);
+map1.insert_element(40000000000000000000000000000000000000000n, 1);
+print_map();
 */
