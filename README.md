@@ -2,13 +2,13 @@
 
 - It contains unordered_map(`C++ STL`) implementation in `Javascript`
 - Following functionalities are supported:
-  - `insert_element(element, count)`: Inserts an element in hashmap if it does not exists (count=0 if not specified)
-  - `increase_count(element, count)`: Increases the frequency of element by count in hashmap (count=0 if not specified)
-    If element does not exists, we add the value with count=0
-  - `decrease_count(element, count)`: Decreases the frequency of element by count in hashmap (minimum: 0) (count=0 if not specified).
-    If element does not exists, we add the value with count=0
+  - `insert_element(element, count)`: Inserts an element in hashmap if it does not exists, else updates the count (count=0 if not specified)
+  - `increase_count(element, count)`: Inserts an element in hashmap if it does not exists, else increases the frequency by count
+    (count=0 if not specified)
+  - `decrease_count(element, count)`: Inserts an element in hashmap if it does not exists, else decreases the frequency by count
+    (count=0 if not specified) (minimum frequency: 0)
   - `remove_element(element)`: Deletes element from hashmap if it exists
-  - `count(element)`: Returns frequency of element. If element does not exists, it will return 0
+  - `count(element)`: Returns frequency of element in hashmap. If element does not exists, it will return 0
   - `search(element)`: Searches if particular element exists in hashmap or not
   - `create_new_bucket()`: Creates new bucket and redestributes values whenever map size exceeds the array size to reduce collision
   - `next_bucket_size(size)`: Helper function to get next bucket size
