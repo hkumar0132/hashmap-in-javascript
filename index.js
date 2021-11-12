@@ -101,17 +101,23 @@ print_map();
   print_map();
 */
 
-// Test case 8: Checking for bigint type
+// Test case 8 - Checking for bigint type
 /*map1.insert_element(100n, 100);
   map1.insert_element(100, 29);
   print_map();
 */
 
-// Test case 9: some more edge cases
+// Test case 9 - testing for functions and array types
+/*map1.insert_element((a, b) => a + b, 101);
+  map1.insert_element([], 405);
+  print_map();
+*/
+
+// Test case 10 - some more edge cases
 /*map1.increase_count("XYZ", 400);
-map1.decrease_count(1000, -100);
-map1.increase_count("XYZ", 300);
-map1.decrease_count("xyz", 400n);
-map1.insert_element(40000000000000000000000000000000000000000n, 1);
-print_map();
+  map1.decrease_count(1000, -100);
+  map1.increase_count("XYZ", 300);
+  map1.decrease_count("xyz", 400n);
+  map1.insert_element(40000000000000000000000000000000000000000n, 1);
+  print_map();
 */

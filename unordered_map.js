@@ -28,24 +28,22 @@ class unordered_map {
   get_hash_value(element) {
 
     const type_of_element = typeof element;
+    // console.log('type of element', type_of_element);
     switch(type_of_element) {
       case "boolean":
         return element % this.bucket_size;
-      case "string":
-        return this.string_hash(element);
-      /*
-        If it's a symbol, object, undefined, bigint or floating point value:
-        convert to string
-      */
       case "number":
         if(element.toString().includes(".") === false) {
           // Integer value
           return element % this.bucket_size;
         }
-      case "symbol":
-      case "object":
-      case "undefined":
-      case "bigint":
+      case "string":
+        return this.string_hash(element);
+      /*
+        If it's a symbol, object, undefined, bigint, floating point value, function or any other type:
+        convert to string for hashing
+      */
+      default:
         let str_value = element.toString();
         return this.string_hash(str_value);
     }
