@@ -94,30 +94,28 @@ class unordered_map {
       return prime;
   }
 
-  // Increases the bucket size to minimize collision
+  // Increases the bucket size and redistributes the element
   create_new_bucket() {
 
     console.log('create new bucket', this.bucket_size);
 
-    const new_bucket_size = this.next_bucket_size(this.bucket_size * 2);
+    // Getting nearest prime >= 2 * size
+    this.bucket_size = this.next_bucket_size(this.bucket_size * 2);
 
     let temp_bucket = [];
-    for(let index = 0; index < new_bucket_size; index++) {
+    for(let index = 0; index < this.bucket_size; index++) {
       temp_bucket.push([]);
     }
 
-    for(let index = 0; index < this.bucket_size; index++) {
-      let sub_bucket = [];
+    for(let index = 0; index < this.bucket.length; index++) {
       for(let j_index = 0; j_index < this.bucket[index].length; j_index++) {
         // Hashing again as the bucket size has changed
         const hash_value = this.get_hash_value(this.bucket[index][j_index]['value']);
-        sub_bucket.push({ 'value': hash_value, 'count': this.bucket[index][j_index]['count'] });
+        temp_bucket[hash_value].push(this.bucket[index][j_index]);
       }
-      temp_bucket.push(sub_bucket);
     }
 
     this.bucket = temp_bucket;
-    this.bucket_size = new_bucket_size;
   }
 
   // Search for an element in hash map
@@ -136,41 +134,60 @@ class unordered_map {
   insert_element(element, count=0) {
 
     const index = this.get_hash_value(element);
-    const { found } = this.search(element);
+    const { found, j_index } = this.search(element);
 
-    if(!found) {
+    if(found === false) {
       this.bucket[index].push({ 'value': element, 'count': count });
-
-      if(++this.map_size > this.bucket_size) {
+      if(++this.map_size ===  this.bucket_size) {
+        // Redestribution
         this.create_new_bucket();
       }
+    } else {
+      this.bucket[index][j_index]['count'] = count;
     }
   }
 
   // Increase the count of an element if it exists, else add the value
   increase_count(element, count=0) {
 
+    if(count < 0) {
+      console.log('Negative values not allowed for increase_count');
+      return;
+    }
+
     const index = this.get_hash_value(element);
     const { found, j_index } = this.search(element);
 
     if(found === false) {
+      // If element is not found, we add it with count = count
       this.bucket[index].push({ 'value': element, 'count': count });
-      if(++this.map_size > this.bucket_size) {
+      if(++this.map_size ===  this.bucket_size) {
+        // Redistribution
         this.create_new_bucket();
       }
     } else {
-      this.bucket[index][j_index].count += count;
+      this.bucket[index][j_index]['count'] += count;
     }
   }
 
   // Decrease the count of an element if it exists, else add the value
   decrease_count(element, count=0) {
 
+    if(count < 0) {
+      console.log('Negative values not allowed for decrease_count');
+      return;
+    }
+
     const index = this.get_hash_value(element);
     const { found, j_index } = this.search(element);
 
     if(found === false) {
-      this.bucket[index].push({ 'value': element, 'count': count });
+      // If element is not found, we add it with count 0
+      this.bucket[index].push({ 'value': element, 'count': 0 });
+      if(++this.map_size ===  this.bucket_size) {
+        // Redistribution
+        this.create_new_bucket();
+      }
     } else {
       this.bucket[index][j_index]['count'] -= count;
       // Minimum count can be 0
@@ -187,11 +204,11 @@ class unordered_map {
     }
   }
 
-  // Returns frequency corresponding to an element, else returns 0
+  // Returns frequency corresponding to an element if it exists, else returns 0
   count(element) {
     const index = this.get_hash_value(element);
     for(let j_index = 0; j_index < this.bucket[index].length; j_index++) {
-      if(this.bucket[index][j_index]['value'] && this.bucket[index][j_index]['value'] === element) {
+      if(this.bucket[index][j_index]['value'] === element) {
         return this.bucket[index][j_index]['count'];
       }
     }
